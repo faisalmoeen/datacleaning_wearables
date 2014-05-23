@@ -45,19 +45,20 @@ The following files are available for the train and test data. Their description
 #Tidy Data
 The script run_analysis.R takes the raw data as an input (raw data should be in the current working directory) and produces a cleaned data in a file named `tidyData.txt`
 
-##Study Design
+###Study Design
  The purpose of `run_analysis.R` script is to clean the raw data in a way that it is ready for doing data analysis on it. The original data is divided into test and training data-sets. For each kind of data-set, the data is further divided into multiple files i.e. feature names, data, labels etc. The script combines all different files into a single file. The script itself is well documented. There are 561 features in the original data and the data is based on numerous observations for 30 subjects. Instead of considering each observation for our analysis, we want to take the mean and standard deviation of the sensor signals. We want to see if mean and standard deviation of sensor signals are enough for classifying the final activity i.e. WALKING etc. In the following the transformation process is discussed.
 
-##Transformation Process
+###Transformation Process
 First we read the files which contain the global information valid for both test and training data-sets i.e. `features.txt` and `activity_labels.txt` into data frames `features` and `labels` respectively. The first file contains the names of the features in test and training data-sets. The second file contains the information about which activity indexes belong to which activity labels.  
 We read the training data-set and then assign feature names to it. Then we filter this data-set by keeping only those features which have "mean()" or "std()" in their names. These are the features which represent the mean ans standard deviation of sensor signals respectively. Then we read training activity indexes from a file `./train/y_train.txt` and add it as a column `actIndex` to the training data. The observations is the data are missing the `id` of the subject to which each observation belongs. We read this information from `./train/subject_train.txt` file and add it as a column `subj` to the training data.  
 The same process is repeated for the test data-set. After this, we merge the two data-sets to make them one. After merging, the data is complete but does not contain any information about what activity does the activity index show. To add this information, we join the data with `labels` data frame. This adds the descriptive label information to the data. We call this feature as `activity`. Now we have the descriptive activity labels which means we don't need the activity indexes so we remove the `actIndex` feature from the data.  
 We then clean the feature names. The feature names as is contain special characters like `()-.` etc. We put all feature names to lower case and remove special characters.  
 To summarize the data to make it feasible for doing analysis, we aggregate the data based on subjects and activities. We have 30 subjects and 6 activities in total which lead to a clean data with `30*6=180` rows. The clean data is written to a file `tidydata.txt` in the current working directory.
 
-##Code Book
+###Code Book
 The transformation process adds two new features to the data.
 * `activity`: The activity the subject was doing when the reading was recorded.
-* `subject`: The id of the person to which the observation belongs.  
-The description of rest of the features is the same as the original data-set except that now the features are aggregated over `subject` and `activity`.
+* `subject`: The id of the person to which the observation belongs.
+
+ The description of rest of the features is the same as the original data-set except that now the features are aggregated over `subject` and `activity`.
 
